@@ -23,3 +23,8 @@ h1{
   flex-flow: row wrap;
   margin: 0 auto;
 }
+#restartButton{
+  text-align: center;
+  font-size: 5rem;
+  border: 5px solid black;
+}
