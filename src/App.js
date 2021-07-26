@@ -29,7 +29,6 @@ class App extends Component{
       treasureLocation: treasure,
       bombLocation: bomb
     })
-    console.log(treasure)
   }
 
   handleGameplay = (index) => {
