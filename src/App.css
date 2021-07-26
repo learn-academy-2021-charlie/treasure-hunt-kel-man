@@ -1,6 +1,10 @@
 h1{
   text-align: center;
 }
+#counter{
+  text-align: center;
+  font-size: 5rem;
+}
 #square{
   height: 200px;
   width: 200px;

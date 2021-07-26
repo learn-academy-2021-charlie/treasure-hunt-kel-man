@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import Square from './components/Square'
+import GameStatus from './components/GameStatus'
 
 class App extends Component{
   constructor(props){
@@ -9,13 +10,14 @@ class App extends Component{
       board: ['?', '?', '?', '?', '?', '?', '?', '?', '?'],
       treasureLocation: null,
       bombLocation: null,
+      guesses: 5,
     }
   }
 
   componentDidMount(){
     let treasure = Math.floor(Math.random()*this.state.board.length)
     let bomb = Math.floor(Math.random()*this.state.board.length)
-    while(bomb == treasure){
+    while(bomb === treasure){
       bomb = Math.floor(Math.random()*this.state.board.length)
     }
     this.setState({
@@ -26,14 +28,17 @@ class App extends Component{
 
   handleGameplay = (index) => {
     const { board } = this.state
-    if(index == this.state.treasureLocation){
+    if(index === this.state.treasureLocation){
       board[index] = '💎'
-    } else if(index == this.state.bombLocation){
+    } else if(index === this.state.bombLocation){
       board[index] = '💣'
     }else {
       board[index] = '🌴'
     }
-    this.setState({board: board})
+    this.setState({
+      board: board,
+      guesses: this.state.guesses - 1
+    })
   }
 
   render(){
@@ -52,6 +57,7 @@ class App extends Component{
             )
           })}
         </div>
+        <GameStatus guesses={this.state.guesses}/>
       </>
     )
   }
