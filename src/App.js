@@ -3,6 +3,7 @@ import './App.css'
 import Square from './components/Square'
 import GameStatus from './components/GameStatus'
 import WinningCard from './components/WinningCard'
+import LosingCard from './components/LosingCard'
 
 class App extends Component{
   constructor(props){
@@ -13,7 +14,7 @@ class App extends Component{
       bombLocation: null,
       guesses: 5,
       playing: true,
-      winStatus: 1,
+      winStatus: 2
     }
   }
 
@@ -27,32 +28,44 @@ class App extends Component{
       treasureLocation: treasure,
       bombLocation: bomb
     })
+    console.log(treasure)
   }
 
   handleGameplay = (index) => {
-    const { board } = this.state
-    let winStatus
-    if(index === this.state.treasureLocation){
-      board[index] = '💎'
-      winStatus = 2
-    } else if(index === this.state.bombLocation || this.state.guesses == 0){
-      board[index] = '💣'
-      winStatus = 1
-    }else {
-      board[index] = '🌴'
+    if(this.state.playing){
+      const { board } = this.state
+      let winStatus
+      let playing = true
+      if(index === this.state.treasureLocation){
+        board[index] = '💎'
+        winStatus = 1
+        playing = false
+      } else if(index === this.state.bombLocation){
+        board[index] = '💣'
+        winStatus = 0
+        playing = false
+      }else {
+        board[index] = '🌴'
+      }
+      if(this.state.guesses === 1 && board[index] !== '💎'){
+        winStatus = 0
+        playing = false
+      }
+      this.setState({
+        board: board,
+        guesses: this.state.guesses - 1,
+        winStatus: winStatus,
+        playing: playing
+      })
     }
-    this.setState({
-      board: board,
-      guesses: this.state.guesses - 1,
-      winStatus: winStatus
-    })
   }
 
   render(){
     return(
       <>
         <h1>Treasure Hunt Game</h1>
-        {this.state.winStatus === 2 && <WinningCard/>}
+        {this.state.winStatus === 1 && <WinningCard/>}
+        {this.state.winStatus === 0 && <LosingCard/>}
         <div id='gameboard'>
           {this.state.board.map((value, index) => {
             return (
