@@ -4,6 +4,7 @@ import Square from './components/Square'
 import GameStatus from './components/GameStatus'
 import WinningCard from './components/WinningCard'
 import LosingCard from './components/LosingCard'
+import RestartButton from './components/RestartButton'
 
 class App extends Component{
   constructor(props){
@@ -60,6 +61,22 @@ class App extends Component{
     }
   }
 
+  restart = () => {
+    let treasure = Math.floor(Math.random()*this.state.board.length)
+    let bomb = Math.floor(Math.random()*this.state.board.length)
+    while(bomb === treasure){
+      bomb = Math.floor(Math.random()*this.state.board.length)
+    }
+    this.setState({
+      treasureLocation: treasure,
+      bombLocation: bomb,
+      board: ['?', '?', '?', '?', '?', '?', '?', '?', '?'],
+      guesses: 5,
+      playing: true,
+      winStatus: 2
+    })
+  }
+
   render(){
     return(
       <>
@@ -79,6 +96,7 @@ class App extends Component{
           })}
         </div>
         <GameStatus guesses={this.state.guesses}/>
+        {!this.state.playing && <RestartButton restart={this.restart}/>}
       </>
     )
   }
