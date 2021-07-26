@@ -1,6 +1,10 @@
 h1{
   text-align: center;
 }
+#winCard{
+  text-align: center;
+  font-size: 10rem;
+}
 #counter{
   text-align: center;
   font-size: 5rem;
