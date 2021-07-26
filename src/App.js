@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './App.css'
 import Square from './components/Square'
 import GameStatus from './components/GameStatus'
+import WinningCard from './components/WinningCard'
 
 class App extends Component{
   constructor(props){
@@ -11,6 +12,8 @@ class App extends Component{
       treasureLocation: null,
       bombLocation: null,
       guesses: 5,
+      playing: true,
+      winStatus: 1,
     }
   }
 
@@ -28,16 +31,20 @@ class App extends Component{
 
   handleGameplay = (index) => {
     const { board } = this.state
+    let winStatus
     if(index === this.state.treasureLocation){
       board[index] = '💎'
-    } else if(index === this.state.bombLocation){
+      winStatus = 2
+    } else if(index === this.state.bombLocation || this.state.guesses == 0){
       board[index] = '💣'
+      winStatus = 1
     }else {
       board[index] = '🌴'
     }
     this.setState({
       board: board,
-      guesses: this.state.guesses - 1
+      guesses: this.state.guesses - 1,
+      winStatus: winStatus
     })
   }
 
@@ -45,6 +52,7 @@ class App extends Component{
     return(
       <>
         <h1>Treasure Hunt Game</h1>
+        {this.state.winStatus === 2 && <WinningCard/>}
         <div id='gameboard'>
           {this.state.board.map((value, index) => {
             return (
